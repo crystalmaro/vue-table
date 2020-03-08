@@ -22,7 +22,7 @@ var vueInstance = new Vue({
           revenue: 10000,
         },
         {
-          source: 'omnichat',
+          source: 'webchat',
           medium: 'fb',
           session: 5000,
           conversion: 0.080,
@@ -38,7 +38,7 @@ var vueInstance = new Vue({
           revenue: 1000,
         },
         {
-          source: 'omnichat',
+          source: 'webchat',
           medium: 'webchat',
           session: 3000,
           conversion: 0.267,
@@ -54,7 +54,7 @@ var vueInstance = new Vue({
           revenue: 10000,
         },
         {
-          source: 'omnichat',
+          source: 'webchat',
           medium: 'fb',
           session: 5000,
           conversion: 0.080,
@@ -70,7 +70,7 @@ var vueInstance = new Vue({
           revenue: 1000,
         },
         {
-          source: 'omnichat',
+          source: 'webchat',
           medium: 'webchat',
           session: 3000,
           conversion: 0.267,
@@ -86,7 +86,7 @@ var vueInstance = new Vue({
           revenue: 10000,
         },
         {
-          source: 'omnichat',
+          source: 'webchat',
           medium: 'fb',
           session: 5000,
           conversion: 0.080,
@@ -102,7 +102,7 @@ var vueInstance = new Vue({
           revenue: 1000,
         },
         {
-          source: 'omnichat',
+          source: 'webchat',
           medium: 'webchat',
           session: 3000,
           conversion: 0.267,
