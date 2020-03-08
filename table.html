@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+  <style>
+    body {
+      font-family: arial, sans-serif;
+      
+    }  
+    table {
+      border-collapse: collapse;
+      width: 90%;
+    }
+    td, th {
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    tr td,
+    tr th {
+      padding: 3px 10px;
+    }
+    tr td:not(:first-child) {
+      /* color: red; */
+      text-align: right;
+    }
+    tr:nth-child(even) {
+      background-color: #eee;
+    }
+    tr:nth-child(1),
+    tr:nth-child(2),
+    tr:nth-child(3) {
+      background: none;
+    }
+    tr:nth-child(1) th,
+    tr:nth-child(2) th,
+    tr:nth-child(3) th {
+      text-align: center;
+    }
+    tr:nth-child(2) td {
+      font-size: 2rem;
+    }
+    tr:nth-child(2) th:nth-child(1),
+    tr:nth-child(3) {
+      border-bottom: 2px solid #aaa;
+    }
+    tr td:nth-child(3),
+    tr td:nth-child(6),
+    tr td:nth-child(8) {
+      color: green;
+    }
+
+    .utm-pagination {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      width: 90%;
+      /* border: 1px solid blue; */
+    }
+    .utm-pagination div {
+      /* border:1px solid red; */
+    }
+    .pointer {
+      cursor: pointer;
+    }
+  </style>
+
+<body>
+  
+  <div class="crystal-test" id="tableContent">
+    <div>
+      <input type='text' v-model='searchInput'>
+      search or filter: {{ searchInput }}
+      <button @click="updateSearchResult">search</button>
+    </div>
+      <hr>
+
+    <table>
+      <tr>
+        <th @click="sortDisplay('sourceMedium')">Source / Medium</th>
+        <th colspan='2' @click="sortDisplay('session')">Sessions</th>
+        <th @click="sortDisplay('conversion')">Conversion</th>
+        <th colspan='2' @click="sortDisplay('transaction')">Transaction</th>
+        <th colspan='2' @click="sortDisplay('revenue')">Revenue</th>
+      </tr>
+      <tr>
+        <th rowspan='2'></th>
+        <th colspan='2'>{{ formatNumber(searchTableSum.sessionSum) }}</th>
+        <th>{{ (searchTableSum.transactionSum/searchTableSum.sessionSum*100).toFixed(1) }}%</th>
+        <th colspan='2'>{{ formatNumber(searchTableSum.transactionSum) }}</th>
+        <th colspan='2'>${{ formatNumber(searchTableSum.revenueSum) }}</th>
+      </tr>
+      <tr>
+        <th colspan='2'>% of Total: {{ (searchTableSum.sessionSum/rawTableSum.sessionSum*100).toFixed(1) }}% ({{ formatNumber(rawTableSum.sessionSum) }})</th>
+        <th>Avg for View: {{ (rawTableSum.conversionAvg*100).toFixed(1) }}% ({{ ((searchTableSum.conversionAvg-rawTableSum.conversionAvg)/rawTableSum.conversionAvg*100).toFixed(1) }}%)</th>
+        <th colspan='2'>% of Total: {{ (searchTableSum.transactionSum/rawTableSum.transactionSum*100).toFixed(1) }}% ({{ formatNumber(rawTableSum.transactionSum) }})</th>
+        <th colspan='2'>% of Total: {{ (searchTableSum.revenueSum/rawTableSum.revenueSum*100).toFixed(1) }}% (${{ formatNumber(rawTableSum.revenueSum) }})</th>
+      </tr>
+      <tr v-for="(item, index) in displayTableData">
+        <td>{{ item.index+1 }}. {{ item.source }} / {{ item.medium }}</td>
+        <td>{{ formatNumber(item.session) }}</td>
+        <td>{{ ((item.session / searchTableSum.sessionSum)*100).toFixed(1) }}%</td>
+        <td>{{ (item.transaction/item.session*100).toFixed(1) }}%</td>
+        <td>{{ formatNumber(item.transaction) }}</td>
+        <td>{{ ((item.transaction / searchTableSum.transactionSum)*100).toFixed(1) }}%</td>
+        <td>${{ formatNumber(item.revenue) }}</td>
+        <td>{{ ((item.revenue / searchTableSum.revenueSum)*100).toFixed(1) }}%</td>
+      </tr>
+    </table>
+
+    <div class='utm-pagination'>
+      <div>
+        Show rows:
+        <select id="page-size" @change="changePageSize($event)" class="pointer">
+          <option value="1">1</option>
+          <option value="3" selected>3</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+        </select>
+      </div>
+      <div>currentPage: {{ currentPage }}</div>
+      <div>totalPages: {{ totalPages }}</div>
+      <div>pages:
+        <span v-for="(page) in pages" @click="clickPageNumber($event)" :value=page class="pointer">{{ page }} | </span>
+      </div>
+      <div>displaying {{ startIndex+1 }} - {{ endIndex+1 }} of {{ searchCount }}</div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="table.js"></script>
+</body>
+</html>
